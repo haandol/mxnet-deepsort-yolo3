@@ -60,7 +60,7 @@ def main(args):
     ctx = mx.gpu(0) if args.gpu else mx.cpu()
     fps = max(0, min(BASE_FPS, args.fps))
     net = model_zoo.get_model(args.network, pretrained=True, ctx=ctx)
-    net.reset_class(classes=['person'], use_weights=['person'])
+    net.reset_class(classes=['person'], reuse_weights=['person'])
 
     # Definition of the parameters
     max_cosine_distance = 0.3
@@ -77,14 +77,14 @@ def main(args):
     tracker = Tracker(metric)
 
     capture = cv2.VideoCapture(args.src)
-    frame_interval = BASE_FPS // fps
+    frame_interval = BASE_FPS // fps if fps > 0 else 0
     frame_index = 0
     while True:
         ret, frame = capture.read()
         if ret != True:
             break
 
-        if 0 < fps and (frame_index % frame_interval != 0):
+        if 0 < fps and frame_index % frame_interval != 0:
             frame_index += 1
             continue
 
