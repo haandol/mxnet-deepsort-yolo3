@@ -25,7 +25,7 @@ BASE_FPS = 30
 
 def parse_args():
     parser = argparse.ArgumentParser(description='DeepSORT using mxnet YOLO3.')
-    parser.add_argument('--network', type=str, default='yolo3_darknet53_coco',
+    parser.add_argument('--network', type=str, default='yolo3_darknet53_voc',
                         help='Base network name which serves as feature extraction base.')
     parser.add_argument('--short', type=int, default=320,
                         help='Input data shape for short-side, use 320, 416, 608...')
