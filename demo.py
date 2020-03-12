@@ -127,7 +127,7 @@ def main(args):
         for track in tracker.tracks:
             bbox = [max(0, int(x)) for x in track.to_tlbr()]
             if not track.is_confirmed() or track.time_since_update > 1:
-                if track.time_since_update == 2:
+                if 1 < track.time_since_update and track.time_since_update % 2 == 0:
                     ex_bbox = extend_bbox(bbox, ratio=.3)
                     ex_bbox = [int(x) for x in ex_bbox]
                     cv2.imwrite(
