@@ -122,6 +122,9 @@ def main(args):
 
         frame_index += 1
 
+        # store original scene
+        cv2.imwrite(os.path.join(args.out_dir, f'orig-{frame_index}.jpg'), img)
+
         show_img = img.copy()
         # check missed
         for track in tracker.tracks:
