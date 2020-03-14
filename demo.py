@@ -27,7 +27,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='DeepSORT using mxnet YOLO3.')
     parser.add_argument('--network', type=str, default='yolo3_darknet53_voc',
                         help='Base network name which serves as feature extraction base.')
-    parser.add_argument('--short', type=int, default=320,
+    parser.add_argument('--short', type=int, default=416,
                         help='Input data shape for short-side, use 320, 416, 608...')
     parser.add_argument('--gpu', type=int, default=0,
                         help='Is GPU accelration available')
