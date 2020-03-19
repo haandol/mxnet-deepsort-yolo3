@@ -14,13 +14,15 @@ Deep-SORT implementation is mostly based on [nwojke/deep_sort](https://github.co
 $ pip install -r requirements.txt
 ```
 
-2. Run demo with BYO-video
+2. Copy your own video file into the folder to test
+
+3. Run demo with BYO-video
 
 ```bash
 $ python demo.py --src video.mp4 --out_dir images --fps 15
 ```
 
-3. Output Images. Frame images will stored into output directory along with mis-detected objects.
+4. Output Images. Frame images will stored into output directory along with mis-detected objects.
 
 ```bash
 $ ls images
