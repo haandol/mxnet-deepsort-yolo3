@@ -1,4 +1,37 @@
 # vim: expandtab:ts=4:sw=4
+import collections
+
+
+class FeatureList(collections.abc.MutableSequence):
+    def __init__(self, n):
+        self._n = n
+        self._list = list()
+    
+    @property
+    def n(self):
+        return self._n
+    
+    def __len__(self):
+        return len(self._list)
+
+    def __delitem__(self, index):
+        self._list.__delitem__(index)
+
+    def insert(self, index, value):
+        self._list.insert(index, value)
+
+    def __setitem__(self, index, value):
+        self._list.__setitem__(index, value)
+
+    def __getitem__(self, index):
+        return self._list.__getitem__(index)
+
+    def append(self, value):
+        if len(self) < self.n:
+            self.insert(len(self) + 1, value)
+        else:
+            self.pop(0)
+            self.insert(len(self) + 1, value)
 
 
 class TrackState:
@@ -73,7 +106,7 @@ class Track:
         self.time_since_update = 0
 
         self.state = TrackState.Tentative
-        self.features = []
+        self.features = FeatureList(10)
         if feature is not None:
             self.features.append(feature)
 
@@ -138,6 +171,7 @@ class Track:
         self.mean, self.covariance = kf.update(
             self.mean, self.covariance, detection.to_xyah())
         self.features.append(detection.feature)
+        print('@@@', self.track_id, len(self.features))
 
         self.hits += 1
         self.time_since_update = 0
