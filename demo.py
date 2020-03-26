@@ -69,7 +69,7 @@ def main(args):
 
     # feature extractor for deepsort re-id
     model_filename = 'model_data/mars-small128.pb'
-    encoder = gdet.create_box_encoder(model_filename, batch_size=1)
+    encoder = gdet.BoxEncoder(model_filename)
 
     metric = nn_matching.NearestNeighborDistanceMetric(
         'cosine', max_cosine_distance, nn_budget
@@ -102,7 +102,10 @@ def main(args):
             if class_ID == person and det_scores[0][i] >= score_threshold:
                 boxs.append(det_boxes[0][i].asnumpy())
 
-        features = encoder(img, boxs)
+        if boxs:
+            features = encoder(img, boxs)
+        else:
+            features = []
 
         # score to 1.0 here).
         detections = [Detection(bbox, 1.0, feature)
