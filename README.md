@@ -4,7 +4,7 @@ Example of MXNet YOLO3 based Deep-SORT implementation.
 
 In order to generate mis detected images for finetune YOLO3.
 
-Deep-SORT implementation is mostly based on [nwojke/deep_sort](https://github.com/nwojke/deep_sort).
+Deep-SORT implementation is mostly based on [nwojke/deep_sort](https://github.com/nwojke/deep_sort) and [Qidian213/deep_sort_yolov3](https://github.com/Qidian213/deep_sort_yolov3)
 
 # Quick Start
 
