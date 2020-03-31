@@ -1,4 +1,3 @@
-# vim: expandtab:ts=4:sw=4
 import numpy as np
 import cv2
 import tensorflow as tf
@@ -9,14 +8,13 @@ IMAGE_SHAPE = (128, 64, 3)
 
 class ImageEncoder(object):
     def __init__(self, checkpoint_filename, output_name='features'):
-        self.loaded = tf.saved_model.load_v2('model_data')
-        self.infer = self.loaded.signatures['serving_default']
+        imported = tf.saved_model.load_v2('model_data')
+        self.f = imported.signatures['serving_default']
         self.output_name = output_name
 
     def __call__(self, data_x):
-        with tf.Session as session:
-            labeling = self.infer(tf.convert_to_tensor(data_x))
-            return labeling[f'net/{self.output_name}:0'].eval()
+        labeling = self.f(tf.convert_to_tensor(data_x))
+        return labeling[f'net/{self.output_name}:0'].numpy()
 
 
 class BoxEncoder(object):
