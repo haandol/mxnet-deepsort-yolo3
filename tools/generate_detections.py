@@ -75,5 +75,7 @@ class BoxEncoder(object):
                 print("WARNING: Failed to extract image patch: %s." % str(box))
                 patch = np.random.uniform(0., 255., IMAGE_SHAPE).astype(np.uint8)
             image_patches.append(patch)
-        image_patches = np.asarray(image_patches)
-        return self.image_encoder(image_patches)
+        if not image_patches:
+            return np.array([])
+        else:
+            return self.image_encoder(np.asarray(image_patches))
