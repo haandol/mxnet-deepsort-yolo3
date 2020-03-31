@@ -8,7 +8,7 @@ IMAGE_SHAPE = (128, 64, 3)
 
 class ImageEncoder(object):
     def __init__(self, checkpoint_filename, output_name='features'):
-        imported = tf.saved_model.load_v2('model_data')
+        imported = tf.saved_model.load('model_data')
         self.f = imported.signatures['serving_default']
         self.output_name = output_name
 
