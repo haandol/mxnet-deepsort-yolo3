@@ -1,11 +1,14 @@
-import numpy as np
 import cv2
-import tensorflow as tf
+import mxnet as mx
+import numpy as np
+from .resnet import resnet50
 
 
 IMAGE_SHAPE = (128, 64, 3)
+ctx = mx.cpu()
 
 
+'''
 class ImageEncoder(object):
     def __init__(self, checkpoint_filename, output_name='features'):
         imported = tf.saved_model.load('model_data')
@@ -15,11 +18,22 @@ class ImageEncoder(object):
     def __call__(self, data_x):
         labeling = self.f(tf.convert_to_tensor(data_x))
         return labeling[f'net/{self.output_name}:0'].numpy()
+'''
+class ImageEncoder(object):
+    def __init__(self):
+        self.net = resnet50(ctx=ctx, pretrained=False)
+        self.net.load_parameters('model_data/resnet50.params', ctx=ctx, allow_missing=True, ignore_extra=True)
+        self.net.hybridize(static_alloc=True)
+
+    def __call__(self, patches):
+        patches = np.rollaxis(patches, 3, 1)
+        f = self.net(mx.nd.array(patches)).asnumpy()
+        return f
 
 
 class BoxEncoder(object):
     def __init__(self, model_filename, output_name='features'):
-        self.image_encoder = ImageEncoder(model_filename, output_name)
+        self.image_encoder = ImageEncoder()
 
     def extract_image_patch(self, image, bbox, patch_shape):
         """Extract image patch from bounding box.
