@@ -25,10 +25,21 @@ class ImageEncoder(object):
         self.net.load_parameters('model_data/resnet50.params', ctx=ctx, allow_missing=True, ignore_extra=True)
         self.net.hybridize(static_alloc=True)
 
+    def fliplr(self, patches):
+        return mx.nd.flip(patches, axis=3)
+
     def __call__(self, patches):
         patches = np.rollaxis(patches, 3, 1)
-        f = self.net(mx.nd.array(patches)).asnumpy()
-        return f
+        patches = mx.nd.array(patches, ctx=ctx)
+        features = []
+        f = self.net(patches).asnumpy()
+        ff = self.net(self.fliplr(patches)).asnumpy()
+        for f1, f2 in zip(f, ff):
+            feature = np.zeros((1, 2048))
+            feature += f1
+            feature += f2
+            features.append(feature[0])
+        return np.asarray(features)
 
 
 class BoxEncoder(object):

@@ -2,6 +2,7 @@ import os
 import logging
 import argparse
 import warnings
+import traceback
 from timeit import time
 
 import cv2
@@ -105,8 +106,8 @@ def main(args):
         if boxs:
             features = encoder(img, boxs)
         else:
-            features = []
-
+            features = np.array([])
+        
         # score to 1.0 here).
         detections = [Detection(bbox, 1.0, feature)
                       for bbox, feature in zip(boxs, features)]
@@ -136,13 +137,16 @@ def main(args):
                 if 1 < track.time_since_update and track.time_since_update % 2 == 0:
                     ex_bbox = extend_bbox(bbox, ratio=.3)
                     ex_bbox = [int(x) for x in ex_bbox]
-                    cv2.imwrite(
-                        os.path.join(
-                            args.out_dir,
-                            f'missed-{frame_index}-{track.track_id}.jpg'
-                        ),
-                        img[ex_bbox[1]:ex_bbox[3], ex_bbox[0]:ex_bbox[2]],
-                    )
+                    try:
+                        cv2.imwrite(
+                            os.path.join(
+                                args.out_dir,
+                                f'missed-{frame_index}-{track.track_id}.jpg'
+                            ),
+                            img[ex_bbox[1]:ex_bbox[3], ex_bbox[0]:ex_bbox[2]],
+                        )
+                    except:
+                        traceback.print_exc() 
                 logger.info('Skipped by time_since_update')
                 continue
 
