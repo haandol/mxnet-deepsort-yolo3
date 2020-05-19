@@ -17,8 +17,8 @@ class Detection(object):
 
     Attributes
     ----------
-    tlwh : ndarray
-        Bounding box in format `(top left x, top left y, width, height)`.
+    tlrb : ndarray
+        Bounding box in format `(top x, left y, right, bottom)`.
     confidence : ndarray
         Detector confidence score.
     feature : ndarray | NoneType
@@ -26,8 +26,9 @@ class Detection(object):
 
     """
 
-    def __init__(self, tlwh, confidence, feature):
-        self.tlwh = np.asarray(tlwh, dtype=np.float)
+    def __init__(self, tlrb, confidence, feature):
+        self.tlbr = np.asarray([tlrb[0], tlrb[1], tlrb[3], tlrb[2]], dtype=np.float32)
+        self.tlwh = np.asarray([tlrb[0], tlrb[1], tlrb[2]-tlrb[0], tlrb[3]-tlrb[1]], dtype=np.float32)
         self.confidence = float(confidence)
         self.feature = np.asarray(feature, dtype=np.float32)
 
@@ -35,9 +36,7 @@ class Detection(object):
         """Convert bounding box to format `(min x, min y, max x, max y)`, i.e.,
         `(top left, bottom right)`.
         """
-        ret = self.tlwh.copy()
-        ret[2:] += ret[:2]
-        return ret
+        return self.tlbr
 
     def to_xyah(self):
         """Convert bounding box to format `(center x, center y, aspect ratio,
