@@ -127,14 +127,14 @@ def main(args):
         frame_index += 1
 
         # store original scene
-        cv2.imwrite(os.path.join(args.out_dir, f'orig-{frame_index}.jpg'), img)
+        cv2.imwrite(os.path.join(args.out_dir, f'{frame_index}.jpg'), img)
 
         show_img = img.copy()
         # check missed
         for track in tracker.tracks:
             bbox = [max(0, int(x)) for x in track.to_tlbr()]
             if not track.is_confirmed() or track.time_since_update > 1:
-                if 2 < track.time_since_update < 10:
+                if 2 <= track.time_since_update < 10:
                     ex_bbox = extend_bbox(bbox, ratio=.3)
                     ex_bbox = [int(x) for x in ex_bbox]
                     try:
@@ -161,7 +161,7 @@ def main(args):
                         (0,255,0), 2)
 
         # show image
-        cv2.imwrite(os.path.join(args.out_dir, f'{frame_index}.jpg'), show_img)
+        cv2.imwrite(os.path.join(args.out_dir, f'anno-{frame_index}.jpg'), show_img)
         cv2.imshow('', show_img)
 
         # Press Q to stop!
