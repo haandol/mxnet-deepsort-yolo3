@@ -19,10 +19,10 @@ $ pip install -r requirements.txt
 3. Run demo with BYO-video
 
 ```bash
-$ python demo.py --src video.mp4 --out-dir images --fps 15
+$ python demo.py --src video.mp4 --out-dir images --fps 12
 ```
 
-4. Output Images. Frame images will stored into output directory along with mis-detected objects.
+4. Output Images. Frame images will be stored into output directory along with mis-detected objects.
 
 ```bash
 $ ls images
