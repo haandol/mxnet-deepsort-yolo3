@@ -44,17 +44,6 @@ def parse_args():
     return args
 
 
-def extend_bbox(bbox, ratio=.2):
-    '''extend bounding box to capture the whole object shape'''
-    xmin, ymin, xmax, ymax = bbox
-    return (
-        max(0, xmin - xmin*ratio),
-        max(0, ymin - ymin*ratio),
-        xmax + xmax*ratio,
-        ymax + ymax*ratio
-    )
-
-
 def main(args):
     logger.info('Start Tracking...')
 
@@ -134,15 +123,13 @@ def main(args):
             bbox = [max(0, int(x)) for x in track.to_tlbr()]
             if not track.is_confirmed() or track.time_since_update > 1:
                 if 2 <= track.time_since_update < 10:
-                    ex_bbox = extend_bbox(bbox, ratio=.3)
-                    ex_bbox = [int(x) for x in ex_bbox]
                     try:
                         cv2.imwrite(
                             os.path.join(
                                 args.out_dir,
                                 f'missed-{frame_index}-{track.track_id}.jpg'
                             ),
-                            img[ex_bbox[1]:ex_bbox[3], ex_bbox[0]:ex_bbox[2]],
+                            img,
                         )
                     except:
                         traceback.print_exc()
