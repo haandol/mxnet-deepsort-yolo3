@@ -32,7 +32,7 @@ class ImageEncoder(object):
 
 
 class BoxEncoder(object):
-    def __init__(self, model_filename, output_name='features'):
+    def __init__(self, output_name='features'):
         self.image_encoder = ImageEncoder()
 
     def extract_image_patch(self, image, bbox, patch_shape):

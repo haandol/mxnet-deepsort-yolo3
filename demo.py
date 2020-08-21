@@ -69,8 +69,7 @@ def main(args):
     nms_max_overlap = 1.0
 
     # feature extractor for deepsort re-id
-    model_filename = 'model_data/mars-small128.pb'
-    encoder = gdet.BoxEncoder(model_filename)
+    encoder = gdet.BoxEncoder()
 
     metric = nn_matching.NearestNeighborDistanceMetric(
         'cosine', max_cosine_distance, nn_budget
@@ -107,7 +106,7 @@ def main(args):
             features = encoder(img, boxs)
         else:
             features = np.array([])
-        
+
         # score to 1.0 here).
         detections = [Detection(bbox, 1.0, feature)
                       for bbox, feature in zip(boxs, features)]
@@ -146,7 +145,7 @@ def main(args):
                             img[ex_bbox[1]:ex_bbox[3], ex_bbox[0]:ex_bbox[2]],
                         )
                     except:
-                        traceback.print_exc() 
+                        traceback.print_exc()
                 logger.info('Skipped by time_since_update')
                 continue
 
