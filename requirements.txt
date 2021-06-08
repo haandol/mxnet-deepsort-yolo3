@@ -9,7 +9,7 @@ matplotlib==3.2.1
 mxnet-mkl==1.6.0b20200303
 numpy==1.18.4
 opencv-python-headless==4.2.0.34
-Pillow==8.1.1
+Pillow==8.2.0
 portalocker==1.7.0
 pyparsing==2.4.7
 python-dateutil==2.8.1
