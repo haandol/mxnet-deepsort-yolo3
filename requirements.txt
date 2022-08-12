@@ -7,7 +7,7 @@ idna==2.9
 kiwisolver==1.2.0
 matplotlib==3.2.1
 mxnet-mkl==1.6.0b20200303
-numpy==1.18.4
+numpy==1.22.0
 opencv-python-headless==4.2.0.34
 Pillow==9.0.1
 portalocker==1.7.0
